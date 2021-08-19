@@ -1,2 +1,7 @@
+source 'https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git'
+platform :ios, '10.0'
+#use_frameworks!
 
-pod 'MBProgressHUD', '~> 0.9.1'
+target 'VoiceRobotQ' do
+pod 'MBProgressHUD'
+end

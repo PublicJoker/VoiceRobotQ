@@ -2,8 +2,8 @@
 //  main.m
 //  VoiceRobotQ
 //
-//  Created by 李宁 on 15/12/28.
-//  Copyright © 2015年 Nathan. All rights reserved.
+//  Created by Tony on 21/08/18.
+//  Copyright © 2015年 Tony. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

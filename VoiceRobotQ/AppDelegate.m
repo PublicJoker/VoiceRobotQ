@@ -2,8 +2,8 @@
 //  AppDelegate.m
 //  VoiceRobotQ
 //
-//  Created by 李宁 on 15/12/28.
-//  Copyright © 2015年 Nathan. All rights reserved.
+//  Created by Tony on 21/08/18.
+//  Copyright © 2015年 Tony. All rights reserved.
 //
 
 #import "AppDelegate.h"
@@ -29,7 +29,7 @@
     
     //创建语音配置,appid必须要传入，仅执行一次则可
     
-    NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",@"5680e77f"];
+    NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",@"9097437c"];
     
     //所有服务启动前，需要确保执行createUtility
     [IFlySpeechUtility createUtility:initString];

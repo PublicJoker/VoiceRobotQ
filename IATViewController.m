@@ -54,13 +54,20 @@
     
     self.Language.text =lan;
     
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self p_setupViews];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeLan) name:@"Lan" object:nil];
 }
+
+- (void)didChangeLan {
+    [self p_setupViews];
+}
+
 #pragma mark viewWillDisappear
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -84,17 +91,15 @@
 #pragma mark  更改目标语言按钮
 -(void)changelan:(UIButton*)sender{
     NSLog(@"更改目标语言");
-    
-    
     ChangeLanViewController *clVC =[[ChangeLanViewController alloc]init];
     [self presentViewController:clVC animated:YES completion:nil];
-    
-    
-    
 }
 
 -(void)p_setupViews{
     
+    for (UIView *sub in self.view.subviews) {
+        [sub removeFromSuperview];
+    }
     
     self.view.backgroundColor=[UIColor whiteColor];
     
@@ -116,7 +121,7 @@
     
     self.Language = [[UILabel alloc]init];
     
-    CGRect rect2 = CGRectMake(CGRectGetMaxX(rect1)+5, CGRectGetMinY(rect1), 40, 30);
+    CGRect rect2 = CGRectMake(CGRectGetMaxX(rect1)+5, CGRectGetMinY(rect1), 80, 30);
     self.Language . frame = rect2;
     self.Language.text =lan;
    
@@ -276,40 +281,36 @@
      
      NSURLSession * session=[NSURLSession sharedSession];
      
-     NSURLSessionDataTask *task= [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-         
-         
-     NSLog(@"翻译返回");
-         
-     if (data) {
-     
-     NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-     
-     NSLog(@"数据%@",dic);
-     NSString *sss=[dic[@"trans_result"][0] valueForKey:@"dst"];
-     NSLog(@"ss=%@",sss);
-     NSString *sss1=_textView.text;
-     NSString *sss2=[NSString stringWithFormat:@"%@\n翻译后：%@",sss1,sss];
-     
-     dispatch_async(dispatch_get_main_queue(), ^{
-     _textView.text =sss2;
-     });
-         
-         
-     }else
-     {
-     NSLog(@"error=%@",error);
-     }
-     
-    // [self hideProgress];
-     }];
+    NSURLSessionDataTask *task= [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        
+        NSLog(@"翻译返回");
+        
+        if (data) {
+            
+            NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+            
+            NSLog(@"数据%@",dic);
+            NSString *sss=[dic[@"trans_result"][0] valueForKey:@"dst"];
+            NSLog(@"ss=%@",sss);
+            
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSString *sss1=_textView.text;
+                NSString *sss2=[NSString stringWithFormat:@"%@\n翻译后：%@",sss1,sss];
+                _textView.text =sss2;
+            });
+            
+            
+        }else
+        {
+            NSLog(@"error=%@",error);
+        }
+        
+        // [self hideProgress];
+    }];
      
      [task resume];//恢复
-     
-     
-     
-     
-     
 }
 #pragma mark 文字翻译
 -(void)wordAction:(UIButton*)sender{
@@ -317,8 +318,10 @@
    
     
     self.cal=NO;
-    [self baiduTranslate:nil];
     
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self baiduTranslate:nil];
+    });
 }
 #pragma mark 解析加减乘除运算符号
 -(NSInteger)getplus:(NSString*)str{
@@ -566,11 +569,10 @@
             
             NSLog(@"%@",nee);
             //NSLog(@"%ld+%ld=%ld",(long)n1,(long)n2,n1+n2);
-            
-            NSString *sss1=_textView.text;
-            NSString *sss2=[NSString stringWithFormat:@"%@\n计算后：%@",sss1,nee];
-            
+                       
             dispatch_async(dispatch_get_main_queue(), ^{
+                NSString *sss1=_textView.text;
+                NSString *sss2=[NSString stringWithFormat:@"%@\n计算后：%@",sss1,nee];
                 _textView.text =sss2;
             });
             
@@ -578,8 +580,9 @@
     }//      if (arr.count>1)
     
     }else{
-        
-        [self baiduTranslate:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self baiduTranslate:nil];
+        });
     }
     
    // [self getNumbers:nil];

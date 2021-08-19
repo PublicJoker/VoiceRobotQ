@@ -35,6 +35,7 @@
     
     [MySingleData shareMyData].LanNumber =indexPath.row;
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Lan" object:nil userInfo:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
     
 }
